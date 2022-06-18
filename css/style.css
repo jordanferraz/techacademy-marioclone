@@ -54,10 +54,10 @@
 }
 
 .jump{
-    animation: jump-animation 500ms ease-out;
+    animation: jump-animation 800ms ease-out;
 }
 
-@keyframes{
+@keyframes jump-animation{
     0%{
         bottom:0;
     }
