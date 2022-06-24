@@ -1,7 +1,23 @@
 const mario = document.querySelector('.mario');
 const pipe = document.querySelector('.pipe');
+const score = document.querySelector('.score');
+const restart = document.querySelector('.restart');
+
+let scoreValue = 0;
 
 let width = screen.width;
+
+
+// MONTA O SCORE A PARTIR DO TEMPO
+
+score.textContent = scoreValue;
+
+    function setTime(){
+        ++scoreValue;
+        score.textContent = scoreValue;
+    }   
+
+
 
 if(width > 768){
 
@@ -13,15 +29,24 @@ const jump = () => {
     }, 800);
 };
 
+
 document.addEventListener('keydown', jump);
 document.addEventListener('touchstart', jump);
 document.addEventListener('click', jump);
+
+startGame();
+
+function startGame(){
 
 const loopGame = setInterval(() => {
 
     const pipePosition = pipe.offsetLeft;
     const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
 
+    setTimeout(setTime(),1000);
+    // console.log(`Pipe Position: ${pipePosition} - Mario Position: ${marioPosition}`);
+
+    
     if(pipePosition <= 160 && pipePosition > 40 && marioPosition < 80){
         pipe.style.animation = 'none';
         pipe.style.left = `${pipePosition}px`;
@@ -34,10 +59,45 @@ const loopGame = setInterval(() => {
         mario.style.bottom = '120px';
         mario.style.left = '120px';
 
+        restartBtn();
+
         clearInterval(loopGame);
+
     }
 
-},10);
+},1);
+
+}
+
+// APARECE BOTÃO RESTART
+
+function restartBtn(){
+    restart.style.display = 'block';
+
+    document.removeEventListener('click', jump);
+    restart.addEventListener('click',restartGame);
+}
+
+const restartGame = () => {
+
+        pipe.style.animation = 'pipe-animation 2000ms infinite linear';
+        pipe.style.right = `0px`;
+        pipe.style.removeProperty('left');
+
+        mario.src = './images/super-mario.gif';
+        mario.style.width = '150px';
+        mario.style.bottom = '0px';
+        mario.style.left = '40px';
+        mario.style.removeProperty('animation');
+
+        restart.style.display = 'none';
+        scoreValue = 0;
+
+        setTimeout(() =>{document.addEventListener('click', jump);}, 200);
+
+        startGame();
+
+}
 
 }else{
 
@@ -52,11 +112,16 @@ const loopGame = setInterval(() => {
     document.addEventListener('keydown', jump);
     document.addEventListener('touchstart', jump);
     
+    startGame();
+
+    function startGame(){
+
     const loopGame = setInterval(() => {
     
         const pipePosition = pipe.offsetLeft;
         const marioPosition = +window.getComputedStyle(mario).bottom.replace('px', '');
-        console.log(marioPosition);
+        
+        setTimeout(setTime(),1000);
     
         if(pipePosition <= 110 && pipePosition > 40 && marioPosition < 60){
             pipe.style.animation = 'none';
@@ -69,12 +134,52 @@ const loopGame = setInterval(() => {
             mario.style.width = '50px';
             mario.style.bottom = '80px';
             mario.style.left = '26px';
+
+            restartBtn();
     
             clearInterval(loopGame);
             
             
         }
     
-    },10);
+    },1);
+
+}
+
+// APARECE BOTÃO RESTART
+
+function restartBtn(){
+    restart.style.display = 'block';
+    document.removeEventListener('click', jump);
+    document.removeEventListener('touchstart', jump);
+    restart.addEventListener('click',restartGame);
+
+}
+
+const restartGame = () => {
+
+        pipe.style.animation = 'pipe-animation 2000ms infinite linear';
+        pipe.style.right = `0px`;
+        pipe.style.removeProperty('left');
+
+        mario.src = './images/super-mario.gif';
+        mario.style.width = '100px';
+        mario.style.bottom = '0px';
+        mario.style.left = '40px';
+        mario.style.removeProperty('animation');
+
+        restart.style.display = 'none';
+        scoreValue = 0;
+
+        setTimeout(() =>{
+
+            document.addEventListener('click', jump);
+            document.addEventListener('touchstart', jump);
+        
+        }, 200);
+
+        startGame();
+
+}
 
 }
