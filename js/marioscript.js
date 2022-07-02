@@ -2,6 +2,7 @@ const mario = document.querySelector('.mario');
 const pipe = document.querySelector('.pipe');
 const score = document.querySelector('.score');
 const restart = document.querySelector('.restart');
+const start = document.querySelector('.start');
 
 let scoreValue = 0;
 
@@ -30,13 +31,28 @@ const jump = () => {
 };
 
 
-document.addEventListener('keydown', jump);
-document.addEventListener('touchstart', jump);
-document.addEventListener('click', jump);
 
-startGame();
+
+// setup start screen
+pipe.style.animation = 'none';
+pipe.style.display = 'none';
+
+document.querySelector('.start').addEventListener('click', startGame);
+
+
+    
 
 function startGame(){
+
+    pipe.style.display = 'block';
+    pipe.style.animation = 'pipe-animation 2000ms infinite linear';
+    start.style.display = 'none';
+
+    setTimeout(() =>{
+        document.addEventListener('keydown', jump);
+        document.addEventListener('touchstart', jump);
+        document.addEventListener('click', jump);
+        }, 200);
 
 const loopGame = setInterval(() => {
 
@@ -111,10 +127,9 @@ const restartGame = () => {
     
     document.addEventListener('keydown', jump);
     document.addEventListener('touchstart', jump);
-    
-    startGame();
 
     function startGame(){
+
 
     const loopGame = setInterval(() => {
     
@@ -135,9 +150,10 @@ const restartGame = () => {
             mario.style.bottom = '80px';
             mario.style.left = '26px';
 
-            restartBtn();
+            
     
             clearInterval(loopGame);
+            restartBtn();
             
             
         }
